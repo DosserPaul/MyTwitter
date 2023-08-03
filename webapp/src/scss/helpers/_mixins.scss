@@ -1,0 +1,144 @@
+// Placeholders
+@mixin placeholder {
+  &.placeholder {
+    @content;
+  }
+  &:-moz-placeholder {
+    @content;
+  }
+  &::-moz-placeholder {
+    @content;
+  }
+  &:-ms-input-placeholder {
+    @content;
+  }
+  &::-webkit-input-placeholder {
+    @content;
+  }
+}
+
+// Responsive
+@mixin mobile($content) {
+  @media (min-width: $breakpoints[mobile][min]) and (max-width: $breakpoints[mobile][max]) {
+    @content;
+  }
+}
+
+@mixin tablet($content) {
+  @media (min-width: $breakpoints[tablet][min]) and (max-width: $breakpoints[tablet][max]) {
+    @content;
+  }
+}
+
+@mixin desktop($content) {
+  @media (min-width: $breakpoints[desktop][min]) and (max-width: $breakpoints[desktop][max]) {
+    @content;
+  }
+}
+
+@mixin widescreen($content) {
+  @media (min-width: $breakpoints[widescreen][min]) and (max-width: $breakpoints[widescreen][max]) {
+    @content;
+  }
+}
+
+@mixin fullhd($content) {
+  @media (min-width: $breakpoints[fullhd][min]) and (max-width: $breakpoints[fullhd][max]) {
+    @content;
+  }
+}
+
+// Text Shorten
+@mixin text-shorten($numLines: 1) {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  @supports (-webkit-line-clamp: $numLines) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: $numLines;
+    -webkit-box-orient: vertical;
+  }
+}
+
+// Z-Index
+$z-indexes: ("modal", "sidebar", “header”);
+
+@function z-index($name) {
+  @if index($z-indexes, $name) {
+    @return (length($z-indexes) - index($z-indexes, $name))+1;
+  } @else {
+    @warn 'There is no item "#{$name}" in this list; choose one of: #{$z-indexes}';
+    @return null;
+  }
+}
+
+// Flex box
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-center-vert {
+  @include flex-row;
+  align-items: center;
+}
+
+@mixin flex-center-horiz {
+  display: flex;
+  justify-content: center;
+}
+
+// Hide
+@mixin hide {
+  position: absolute;
+  top: -11111px;
+  left: -11111px;
+}
+
+// Box Shadow
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow: inset $top $left $blur $color;
+    -moz-box-shadow: inset $top $left $blur $color;
+    box-shadow: inset $top $left $blur $color;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $color;
+    -moz-box-shadow: $top $left $blur $color;
+    box-shadow: $top $left $blur $color;
+  }
+}
+
+// Transition
+@mixin transition($property: all, $duration: 0.3s, $easing: ease) {
+  -webkit-transition: $property $duration $easing;
+  -moz-transition: $property $duration $easing;
+  -o-transition: $property $duration $easing;
+  transition: $property $duration $easing;
+}
+
+// Link
+@mixin links($normal, $visited, $hover) {
+  &:visited {
+    color: $visited;
+  }
+  &:hover,
+  &:active,
+  &:focus {
+    color: $hover;
+  }
+}

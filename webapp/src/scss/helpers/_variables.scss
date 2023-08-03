@@ -1,0 +1,51 @@
+// Breakpoints
+$breakpoints: (
+  mobile: (
+    min: 320px,
+    max: 480px,
+  ),
+  tablet: (
+    min: 481px,
+    max: 768px,
+  ),
+  desktop: (
+    min: 769px,
+    max: 1024px,
+  ),
+  widescreen: (
+    min: 1025px,
+    max: 1200px,
+  ),
+  fullhd: (
+    min: 1201px,
+    max: 99999999px,
+  ),
+) !default;
+
+//==============
+// Variables
+//==============
+
+// Backgrounds
+$main-background: #06141D;
+$container-background: #1A2730;
+$input-background: #27343E;
+
+// Colors
+$main-color: #FFFFFF;
+$secondary-color: #1D9BF0;
+$green-color: #1EDA97;
+$blue-color: #4B93FE;
+$red-color: #DC6262;
+$yellow-color: #F6BD51;
+$text-color: #D2DADD;
+$gray-color: #62707C;
+
+$success-color: #28a745;
+$info-color: #17a2b8;
+$warning-color: #ffc107;
+$danger-color: #dc3545;
+
+// Border radius
+$card-border-radius: 25px;
+$input-border-radius: 15px;
