@@ -3,17 +3,15 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import {IResponse, IResponseToken} from "../interfaces/IResponse";
-import {sendError} from "../utils/Errors";
 
 import * as dotenv from "dotenv";
-import {sendSuccess} from "../utils/Success";
 dotenv.config();
 
 interface IUserPlayload {
     email: string;
     password: string;
-    username?: string;
-    hashtag?: string;
+    username: string;
+    hashtag: string;
 }
 
 class AuthServices {
@@ -25,27 +23,27 @@ class AuthServices {
         this.jwtSecret = process.env.JWT_SECRET || "secret";
     }
 
-    public async login({ email, password }: IUserPlayload): Promise<IResponseToken> {
-        if (!email || !password) {
-            return {
-                code: 400,
-                message: "Please provide an email and a password"
-            }
-        }
-
+    public async login(email: string, password: string): Promise<IResponseToken> {
         const user = await this.prisma.user.findUnique({
             where: {
                 email: email
             }
         });
-
         if (!user) {
-            return sendError(400, "Invalid credentials")
+            return {
+                status: "error",
+                code: 400,
+                message: "Invalid credentials"
+            }
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return sendError(400, "Invalid credentials")
+            return {
+                status: "error",
+                code: 400,
+                message: "Invalid credentials"
+            }
         }
 
         const token = jwt.sign({
@@ -57,24 +55,29 @@ class AuthServices {
         });
 
         return {
+            status: "success",
             code: 200,
             message: "Logged in successfully",
-            accessToken: token
+            accessToken: token,
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            hashtag: user.hashtag
         }
     }
 
     public async register({ email, password, username, hashtag }: IUserPlayload): Promise<IResponse> {
-        if (!email || !password || !username || !hashtag) {
-            return sendError(400, "Please provide an email, a password, a username and a hashtag");
-        }
-
         const emailExists = await this.prisma.user.findUnique({
             where: {
                 email: email
             }
         });
         if (emailExists) {
-            return sendError(400, "Email already exists")
+            return {
+                status: "error",
+                code: 400,
+                message: "Email already exists"
+            }
         }
 
         const hashtagExists = await this.prisma.user.findUnique({
@@ -83,17 +86,11 @@ class AuthServices {
             }
         });
         if (hashtagExists) {
-            return sendError(400, "Hashtag already exists")
-        }
-
-        if (password.length < 6) {
-            return sendError(400, "Password must be at least 6 characters long");
-        }
-        if (username.length < 3) {
-            return sendError(400, "Username must be at least 3 characters long")
-        }
-        if (username.length > 20) {
-            return sendError(400, "Username must be at most 20 characters long")
+            return {
+                status: "error",
+                code: 400,
+                message: "Hashtag already exists"
+            }
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -108,10 +105,18 @@ class AuthServices {
             }
         });
         if (!user) {
-            return sendError(500, "Something went wrong");
+            return {
+                status: "error",
+                code: 400,
+                message: "Unable to create user"
+            }
         }
 
-        return sendSuccess(201, "User created successfully");
+        return {
+            status: "success",
+            code: 200,
+            message: "User created successfully"
+        }
     }
 }
 

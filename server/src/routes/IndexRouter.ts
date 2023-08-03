@@ -1,6 +1,6 @@
 import {Router} from "express";
-import IndexController from "../controllers/index.controller";
-import AuthRouter from "./auth.routes";
+import IndexController from "../controllers/IndexController";
+import AuthRouter from "./AuthRouter";
 
 class IndexRouter {
     public router: Router;
@@ -16,7 +16,7 @@ class IndexRouter {
 
     private routes(): void {
         // Auth routes
-        this.router.use("/auth", AuthRouter)
+        this.router.use("/auth", AuthRouter);
 
         // Default route
         this.router.get("/", this.indexController.index);

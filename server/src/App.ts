@@ -5,9 +5,9 @@ import morgan from "morgan";
 import compression from "compression";
 import expressRateLimit from "express-rate-limit";
 import * as dotenv from "dotenv";
+import IndexRouter from "./routes/IndexRouter";
 
 // Routes
-import IndexRouter from "./routes/index.routes";
 
 dotenv.config();
 
