@@ -64,10 +64,12 @@ class LoginController extends BaseController {
       }
 
       this.res.status(200).json({
-        id: this.data.id,
-        username: this.data.username,
-        email: this.data.email,
-        hashtag: this.data.hashtag,
+        user: {
+          id: this.data.id,
+          username: this.data.username,
+          email: this.data.email,
+          hashtag: this.data.hashtag,
+        },
         token: this.data.accessToken,
       });
 
