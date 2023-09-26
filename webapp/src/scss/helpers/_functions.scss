@@ -1,5 +1,0 @@
-// Px to Rem
-@function toRem($value) {
-    $remValue: calc($value / 14) + rem;
-    @return $remValue;
-}
